@@ -1,12 +1,12 @@
 ﻿using CleanArch.Application.InputModels;
+using CleanArch.Domain;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanArch.Application.Features.Feedbacks
 {
     public interface IFeedbackService
     {
-        void Add(FeedbackInputModel inputModel);
+        Task<Result<Exception, Unit>> AddAsync(FeedbackInputModel inputModel);
     }
 }

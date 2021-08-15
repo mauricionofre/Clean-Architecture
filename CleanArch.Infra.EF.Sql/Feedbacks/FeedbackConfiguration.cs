@@ -10,13 +10,11 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
         {
             builder.ToTable("Feedback");
             builder.HasKey(x => x.Id);
+
             builder.Property(s => s.Commentary).IsRequired();
             builder.Property(s => s.Approved).IsRequired();
             builder.Property(s => s.ToUserId).IsRequired();
             builder.Property(s => s.FromUserId).IsRequired();
-
-            builder.HasOne(x => x.ToUser);
-            builder.HasOne(x => x.FromUser);
         }
     }
 }

@@ -28,5 +28,12 @@ namespace CleanArch.Application.Features.Users
 
             return user;
         }
+
+        public IEnumerable<User> GetAll()
+        {
+            _log.LogInformation("Buscando todos os Usuários");
+
+            return _repository.GetAll();
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace CleanArch.Application.Features.Users
     public interface IUserService
     {
         User GetById(long id);
+
+        IEnumerable<User> GetAll();
     }
 }

@@ -6,6 +6,5 @@ namespace CleanArch.Domain.Entities
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Feedback> Feedbacks { get; set; }
     }
 }

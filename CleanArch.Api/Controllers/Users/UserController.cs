@@ -27,7 +27,8 @@ namespace CleanArch.Api.Controllers.Users
         {
             _logger.LogInformation("Buscando Usuarios");
 
-            return Ok(_service.GetById(1));
+            var users = _service.GetAll();
+            return Ok(users);
         }
     }
 }

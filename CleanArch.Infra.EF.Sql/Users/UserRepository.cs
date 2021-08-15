@@ -1,6 +1,7 @@
 ﻿using CleanArch.Domain.Entities;
 using CleanArch.Domain.Repositories;
 using CleanArch.Infra.EF.Sql.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace CleanArch.Infra.EF.Sql.Users
 
         public IEnumerable<User> GetAll()
         {
-            return _context.Users;
+            return _context.Users
+                .AsNoTracking();
         }
 
         public User GetById(long id)

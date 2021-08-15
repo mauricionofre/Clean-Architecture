@@ -27,7 +27,7 @@ namespace CleanArch.Api.Controllers.Feedbacks
         {
             _logger.LogInformation("Adicionando novo Feedback");
 
-            _service.Add(feedback);
+            _service.AddAsync(feedback);
 
             return Ok();
         }

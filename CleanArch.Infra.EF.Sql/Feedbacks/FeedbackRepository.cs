@@ -1,9 +1,12 @@
-﻿using CleanArch.Domain.Entities;
+﻿using CleanArch.Domain;
+using CleanArch.Domain.Entities;
+using CleanArch.Domain.Exceptions;
 using CleanArch.Domain.Repositories;
 using CleanArch.Infra.EF.Sql.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanArch.Infra.EF.Sql.Feedbacks
 {
@@ -16,13 +19,15 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
             _context = context;
         }
 
-        public void Add(Feedback feedback)
+        public async Task<Result<Exception, Feedback>> AddAsync(Feedback feedback)
         {
             if (feedback == null)
-                return;
+                return new NotFoundException();
 
-            _context.Add(feedback);
+            var feedbackDb = await _context.Set<Feedback>().AddAsync(feedback);
             _context.SaveChanges();
+
+            return feedbackDb.Entity;
         }
 
         public IEnumerable<Feedback> GetAll()

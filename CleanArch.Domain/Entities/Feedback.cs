@@ -7,9 +7,7 @@
         public bool Approved { get; set; }
 
         public long ToUserId { get; set; }
-        public User ToUser { get; set; }
 
         public long FromUserId { get; set; }
-        public User FromUser { get; set; }
     }
 }
