@@ -5,6 +5,7 @@ using CleanArch.Domain.Repositories;
 using CleanArch.Infra.EF.Sql.Contexts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
             return feedbackDb.Entity;
         }
 
-        public IEnumerable<Feedback> GetAll()
+        public async Task<Result<Exception, IQueryable<Feedback>>> GetAll()
         {
             return _context.Feedbacks;
         }

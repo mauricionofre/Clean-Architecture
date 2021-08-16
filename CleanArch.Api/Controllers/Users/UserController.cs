@@ -11,14 +11,12 @@ namespace CleanArch.Api.Controllers.Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ApiControllerBase<UserController>
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IUserService _service;
 
-        public UserController(ILogger<UserController> logger, IUserService userService)
+        public UserController(ILogger<UserController> logger, IUserService userService) : base(logger)
         {
-            _logger = logger;
             _service = userService;
         }
 

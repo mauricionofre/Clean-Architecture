@@ -1,35 +1,40 @@
 ﻿using CleanArch.Application.Features.Feedbacks;
 using CleanArch.Application.InputModels;
+using CleanArch.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CleanArch.Api.Controllers.Feedbacks
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FeedbackController : ControllerBase
+    public class FeedbackController : ApiControllerBase<FeedbackController>
     {
-        private readonly ILogger<FeedbackController> _logger;
         private readonly IFeedbackService _service;
 
-        public FeedbackController(ILogger<FeedbackController> logger, IFeedbackService feedbackService)
+        public FeedbackController(ILogger<FeedbackController> logger, IFeedbackService feedbackService) : base(logger)
         {
-            _logger = logger;
             _service = feedbackService;
         }
 
-        public IActionResult FeedbackPost([FromBody] FeedbackInputModel feedback)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] FeedbackInputModel feedback)
         {
             _logger.LogInformation("Adicionando novo Feedback");
 
-            _service.AddAsync(feedback);
+            return HandleService(await _service.AddAsync(feedback));
+        }
 
-            return Ok();
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return HandleService(await _service.GetAll());
         }
     }
 }

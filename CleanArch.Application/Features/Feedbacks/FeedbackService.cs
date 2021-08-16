@@ -5,8 +5,7 @@ using CleanArch.Domain.Entities;
 using CleanArch.Domain.Notifications;
 using CleanArch.Domain.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanArch.Application.Features.Feedbacks
@@ -27,7 +26,7 @@ namespace CleanArch.Application.Features.Feedbacks
             _feedbackCreated = feedbackCreated;
         }
 
-        public async Task<Result<Exception, Unit>> AddAsync(FeedbackInputModel inputModel)
+        public async Task<Result<Exception, FeedbackOutputModel>> AddAsync(FeedbackInputModel inputModel)
         {
             User toUser = _userService.GetById(inputModel.ToUser);
             User fromUser = _userService.GetById(inputModel.FromUser);
@@ -48,7 +47,25 @@ namespace CleanArch.Application.Features.Feedbacks
 
             _ = _feedbackCreated.CreatedFeedbackAsync(feedback);
 
-            return Unit.Successful;
+            return new FeedbackOutputModel(feedback);
+        }
+
+        public async Task<Result<Exception, IQueryable<FeedbackOutputModel>>> GetAll()
+        {
+            var getAllResult = await _repository.GetAll();
+            if (getAllResult.IsFailure)
+                return new Exception("Não foi possivel retornar os Feedbacks");
+
+            var feedbacks = getAllResult.Success
+                .Select(f => new FeedbackOutputModel
+                {
+                    Id = f.Id,
+                    Commentary = f.Commentary,
+                    FromUserId = f.FromUserId,
+                    ToUserId = f.ToUserId
+                });
+
+            return Result.Run(() => feedbacks);
         }
     }
 }

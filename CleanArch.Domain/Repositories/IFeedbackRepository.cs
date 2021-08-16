@@ -1,6 +1,6 @@
 ﻿using CleanArch.Domain.Entities;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanArch.Domain.Repositories
@@ -9,6 +9,6 @@ namespace CleanArch.Domain.Repositories
     {
         Task<Result<Exception, Feedback>> AddAsync(Feedback entity);
 
-        IEnumerable<Feedback> GetAll();
+        Task<Result<Exception, IQueryable<Feedback>>> GetAll();
     }
 }
