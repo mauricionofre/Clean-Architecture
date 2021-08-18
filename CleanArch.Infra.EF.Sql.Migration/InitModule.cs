@@ -27,12 +27,10 @@ namespace CleanArch.Infra.EF.Sql.Migrations
 
         public static void ExecuteMigration(this IServiceProvider serviceProvider)
         {
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+            using var scope = serviceProvider.CreateScope();
+            var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
 
-                runner.MigrateUp();
-            }
+            runner.MigrateUp();
         }
     }
 }

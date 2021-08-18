@@ -9,6 +9,10 @@ namespace CleanArch.Domain.Repositories
     {
         Task<Result<Exception, Feedback>> AddAsync(Feedback entity);
 
+        Task<Result<Exception, Feedback>> UpdateAsync(Feedback entity);
+
         Task<Result<Exception, IQueryable<Feedback>>> GetAll();
+
+        Task<Result<Exception, Feedback>> GetById(long id);
     }
 }

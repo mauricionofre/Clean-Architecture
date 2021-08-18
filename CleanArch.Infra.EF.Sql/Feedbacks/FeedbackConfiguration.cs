@@ -1,6 +1,7 @@
 ﻿using CleanArch.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace CleanArch.Infra.EF.Sql.Feedbacks
 {
@@ -12,7 +13,12 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
             builder.HasKey(x => x.Id);
 
             builder.Property(s => s.Commentary).IsRequired();
-            builder.Property(s => s.Approved).IsRequired();
+            builder.Property(s => s.Status).IsRequired();
+            builder.Property(s => s.StatusDescription);
+            builder.Property(s => s.CreatedAt)
+                .HasColumnType("datetime")
+                .IsRequired();
+
             builder.Property(s => s.ToUserId).IsRequired();
             builder.Property(s => s.FromUserId).IsRequired();
         }

@@ -2,6 +2,7 @@
 using CleanArch.Application.InputModels;
 using CleanArch.Domain;
 using CleanArch.Domain.Entities;
+using CleanArch.Domain.Enums;
 using CleanArch.Domain.Notifications;
 using CleanArch.Domain.Repositories;
 using System;
@@ -26,6 +27,29 @@ namespace CleanArch.Application.Features.Feedbacks
             _feedbackCreated = feedbackCreated;
         }
 
+        public async Task<Result<Exception, FeedbackOutputModel>> ApproveAsync(FeedbackApproveModel inputModel, long feedbackId)
+        {
+            if (!inputModel.Approve && string.IsNullOrEmpty(inputModel.DescriptionRejection))
+                return new Exception("Descrição da rejeição não está preenchida");
+
+            var getResult = await _repository.GetById(feedbackId);
+            if (getResult.IsFailure || getResult.Success == null)
+                return new Exception("Não foi possivel retornar o Feedback");
+
+            var feedback = getResult.Success;
+
+            if (inputModel.Approve)
+                feedback.Approve();
+            else
+                feedback.Reject(inputModel.DescriptionRejection);
+
+            var updateResult = await _repository.UpdateAsync(feedback);
+            if (updateResult.IsFailure)
+                return new Exception("Não foi possivel retornar o Feedback");
+
+            return new FeedbackOutputModel(feedback);
+        }
+
         public async Task<Result<Exception, FeedbackOutputModel>> AddAsync(FeedbackInputModel inputModel)
         {
             User toUser = _userService.GetById(inputModel.ToUser);
@@ -37,13 +61,15 @@ namespace CleanArch.Application.Features.Feedbacks
             Feedback feedback = new Feedback
             {
                 Commentary = inputModel.Commentary,
+                Status = FeedbackStatusEnum.Pending,
+                CreatedAt = DateTime.Now,
                 ToUserId = toUser.Id,
                 FromUserId = fromUser.Id
             };
 
             var addResult = await _repository.AddAsync(feedback);
             if (addResult.IsFailure)
-                return new Exception("Não Foi possivel adicionar o Feedback");
+                return new Exception("Não foi possivel adicionar o Feedback");
 
             _ = _feedbackCreated.CreatedFeedbackAsync(feedback);
 
@@ -57,15 +83,27 @@ namespace CleanArch.Application.Features.Feedbacks
                 return new Exception("Não foi possivel retornar os Feedbacks");
 
             var feedbacks = getAllResult.Success
-                .Select(f => new FeedbackOutputModel
-                {
-                    Id = f.Id,
-                    Commentary = f.Commentary,
-                    FromUserId = f.FromUserId,
-                    ToUserId = f.ToUserId
-                });
+                .Select(f => new FeedbackOutputModel(f));
 
             return Result.Run(() => feedbacks);
+        }
+
+        public async Task<Result<Exception, FeedbackOutputModel>> GetByIdAsync(long id)
+        {
+            var getAllResult = await _repository.GetById(id);
+            if (getAllResult.IsFailure || getAllResult.Success == null)
+                return new Exception("Não foi possivel retornar o Feedback");
+
+            var result = getAllResult.Success;
+            var mapped = new FeedbackOutputModel
+            {
+                Id = result.Id,
+                Commentary = result.Commentary,
+                FromUserId = result.FromUserId,
+                ToUserId = result.ToUserId
+            };
+
+            return Result.Run(() => mapped);
         }
     }
 }

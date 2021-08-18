@@ -10,7 +10,7 @@ namespace CleanArch.Infra.Notification
     {
         public async Task<Result<Exception, Unit>> CreatedFeedbackAsync(Feedback feedback)
         {
-            return Unit.Successful;
+            return await Task.Run(() => Result.Run(() => Unit.Successful));
         }
     }
 }
