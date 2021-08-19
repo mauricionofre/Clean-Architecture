@@ -15,16 +15,16 @@ namespace CleanArch.Application.Features.Feedbacks
     {
         private readonly IUserService _userService;
         private readonly IFeedbackRepository _repository;
-        private readonly IFeedbackNotification _feedbackCreated;
+        private readonly IFeedbackNotification _feedbackNotify;
 
         public FeedbackService(
             IUserService userService,
             IFeedbackRepository repository,
-            IFeedbackNotification feedbackCreated)
+            IFeedbackNotification feedbackNotify)
         {
             _userService = userService;
             _repository = repository;
-            _feedbackCreated = feedbackCreated;
+            _feedbackNotify = feedbackNotify;
         }
 
         public async Task<Result<Exception, FeedbackOutputModel>> ApproveAsync(FeedbackApproveModel inputModel, long feedbackId)
@@ -46,6 +46,8 @@ namespace CleanArch.Application.Features.Feedbacks
             var updateResult = await _repository.UpdateAsync(feedback);
             if (updateResult.IsFailure)
                 return new Exception("Não foi possivel retornar o Feedback");
+
+            _feedbackNotify.ApprovedFeedbackAsync(feedback);
 
             return new FeedbackOutputModel(feedback);
         }
@@ -71,7 +73,7 @@ namespace CleanArch.Application.Features.Feedbacks
             if (addResult.IsFailure)
                 return new Exception("Não foi possivel adicionar o Feedback");
 
-            _ = _feedbackCreated.CreatedFeedbackAsync(feedback);
+            _ = _feedbackNotify.CreatedFeedbackAsync(feedback);
 
             return new FeedbackOutputModel(feedback);
         }
