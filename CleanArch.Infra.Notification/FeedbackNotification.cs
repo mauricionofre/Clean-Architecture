@@ -8,9 +8,9 @@ namespace CleanArch.Infra.Notification
 {
     public class FeedbackNotification : IFeedbackNotification
     {
-        public Task<Result<Exception, Unit>> ApprovedFeedbackAsync(Feedback feedback)
+        public async Task<Result<Exception, Unit>> ApprovedFeedbackAsync(Feedback feedback)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => Result.Run(() => Unit.Successful));
         }
 
         public async Task<Result<Exception, Unit>> CreatedFeedbackAsync(Feedback feedback)

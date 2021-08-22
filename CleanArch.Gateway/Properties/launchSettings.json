@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:60648",
-      "sslPort": 44391
+      "applicationUrl": "http://localhost:62160",
+      "sslPort": 44393
     }
   },
   "profiles": {
@@ -17,11 +17,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CleanArch.Api": {
+    "CleanArch.Gateway": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/user",
-      "applicationUrl": "https://localhost:5001",
+      "launchUrl": "feedback",
+      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -5,6 +5,7 @@ using CleanArch.Domain.Entities;
 using CleanArch.Domain.Enums;
 using CleanArch.Domain.Notifications;
 using CleanArch.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,19 +14,13 @@ namespace CleanArch.Application.Features.Feedbacks
 {
     public class FeedbackService : IFeedbackService
     {
+        private readonly ILogger<FeedbackService> _logger;
         private readonly IUserService _userService;
         private readonly IFeedbackRepository _repository;
         private readonly IFeedbackNotification _feedbackNotify;
 
-        public FeedbackService(
-            IUserService userService,
-            IFeedbackRepository repository,
-            IFeedbackNotification feedbackNotify)
-        {
-            _userService = userService;
-            _repository = repository;
-            _feedbackNotify = feedbackNotify;
-        }
+        public FeedbackService(ILogger<FeedbackService> logger, IUserService userService, IFeedbackRepository repository, IFeedbackNotification feedbackNotify) =>
+            (_logger, _userService, _repository, _feedbackNotify) = (logger, userService, repository, feedbackNotify);
 
         public async Task<Result<Exception, FeedbackOutputModel>> ApproveAsync(FeedbackApproveModel inputModel, long feedbackId)
         {
@@ -47,19 +42,21 @@ namespace CleanArch.Application.Features.Feedbacks
             if (updateResult.IsFailure)
                 return new Exception("Não foi possivel retornar o Feedback");
 
-            _feedbackNotify.ApprovedFeedbackAsync(feedback);
+            _ = _feedbackNotify.ApprovedFeedbackAsync(feedback);
 
             return new FeedbackOutputModel(feedback);
         }
 
         public async Task<Result<Exception, FeedbackOutputModel>> AddAsync(FeedbackInputModel inputModel)
         {
+            _logger.LogInformation("Adicionando feedback");
             User toUser = _userService.GetById(inputModel.ToUser);
             User fromUser = _userService.GetById(inputModel.FromUser);
 
             if (toUser == null || fromUser == null)
                 return new Exception("Não foi possivel encontrar os usuários");
 
+            _logger.LogDebug("Mapeando feedback");
             Feedback feedback = new Feedback
             {
                 Commentary = inputModel.Commentary,
@@ -69,12 +66,15 @@ namespace CleanArch.Application.Features.Feedbacks
                 FromUserId = fromUser.Id
             };
 
+            _logger.LogDebug("Adicionando ao repositorio");
             var addResult = await _repository.AddAsync(feedback);
             if (addResult.IsFailure)
                 return new Exception("Não foi possivel adicionar o Feedback");
 
+            _logger.LogDebug("Criando notificação");
             _ = _feedbackNotify.CreatedFeedbackAsync(feedback);
 
+            _logger.LogInformation("Feedback criado com sucesso");
             return new FeedbackOutputModel(feedback);
         }
 
