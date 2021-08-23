@@ -14,7 +14,7 @@ namespace CleanArch.Infra.EF.Sql.Migrations.Feedbacks
         public override void Up()
         {
             Create.Table("Feedback")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("Id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("Commentary").AsString().NotNullable()
                 .WithColumn("Approved").AsBoolean().NotNullable();
         }

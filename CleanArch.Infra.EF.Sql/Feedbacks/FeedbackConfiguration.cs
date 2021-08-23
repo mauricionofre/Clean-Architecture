@@ -12,6 +12,7 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
             builder.ToTable("Feedback");
             builder.HasKey(x => x.Id);
 
+            builder.Property(s => s.Id).IsRequired();
             builder.Property(s => s.Commentary).IsRequired();
             builder.Property(s => s.Status).IsRequired();
             builder.Property(s => s.StatusDescription);

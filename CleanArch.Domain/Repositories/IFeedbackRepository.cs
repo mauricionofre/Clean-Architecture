@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace CleanArch.Domain.Repositories
 {
-    public interface IFeedbackRepository
+    public interface IFeedbackRepository : IRepository<Feedback>
     {
-        Task<Result<Exception, Feedback>> AddAsync(Feedback entity);
+        Result<Exception, Feedback> Add(Feedback entity);
 
-        Task<Result<Exception, Feedback>> UpdateAsync(Feedback entity);
+        Result<Exception, Feedback> Update(Feedback entity);
 
         Task<Result<Exception, IQueryable<Feedback>>> GetAll();
 
-        Task<Result<Exception, Feedback>> GetById(long id);
+        Task<Result<Exception, Feedback>> GetById(int id);
     }
 }

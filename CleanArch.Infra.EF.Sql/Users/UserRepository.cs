@@ -2,16 +2,19 @@
 using CleanArch.Domain.Repositories;
 using CleanArch.Infra.EF.Sql.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CleanArch.Infra.EF.Sql.Users
 {
     public class UserRepository : IUserRepository
     {
         private readonly SqlDbContext _context;
+
+        public IUnitOfWork UnitOfWork
+        {
+            get { return _context; }
+        }
 
         public UserRepository(SqlDbContext context)
         {
@@ -24,7 +27,7 @@ namespace CleanArch.Infra.EF.Sql.Users
                 .AsNoTracking();
         }
 
-        public User GetById(long id)
+        public User GetById(int id)
         {
             return _context.Users.FirstOrDefault(x => x.Id == id);
         }

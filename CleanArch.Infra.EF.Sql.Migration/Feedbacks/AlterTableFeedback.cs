@@ -15,8 +15,8 @@ namespace CleanArch.Infra.EF.Sql.Migrations.Feedbacks
         public override void Up()
         {
             Alter.Table("Feedback")
-                .AddColumn("FromUserId").AsInt64().NotNullable()
-                .AddColumn("ToUserId").AsInt64().NotNullable();
+                .AddColumn("FromUserId").AsInt32().NotNullable()
+                .AddColumn("ToUserId").AsInt32().NotNullable();
         }
     }
 }

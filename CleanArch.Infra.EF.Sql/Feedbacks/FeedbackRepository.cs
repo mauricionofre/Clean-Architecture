@@ -14,26 +14,28 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
     {
         private readonly SqlDbContext _context;
 
+        public IUnitOfWork UnitOfWork
+        {
+            get { return _context; }
+        }
+
         public FeedbackRepository(SqlDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Result<Exception, Feedback>> AddAsync(Feedback feedback)
+        public Result<Exception, Feedback> Add(Feedback feedback)
         {
             if (feedback == null)
                 return new NotFoundException();
 
-            var feedbackDb = await _context.Feedbacks.AddAsync(feedback);
-            await _context.SaveChangesAsync();
-
-            return feedbackDb.Entity;
+            return _context.Feedbacks.Add(feedback).Entity;
         }
 
-        public async Task<Result<Exception, Feedback>> UpdateAsync(Feedback entity)
+        public Result<Exception, Feedback> Update(Feedback entity)
         {
-            var feedbackResult = _context.Feedbacks.Update(entity);
-            await _context.SaveChangesAsync();
+            var feedbackResult = _context.Entry(entity);
+            feedbackResult.State = EntityState.Modified;
 
             return feedbackResult.Entity;
         }
@@ -43,9 +45,9 @@ namespace CleanArch.Infra.EF.Sql.Feedbacks
             return _context.Feedbacks;
         }
 
-        public async Task<Result<Exception, Feedback>> GetById(long id)
+        public async Task<Result<Exception, Feedback>> GetById(int id)
         {
-            return await _context.Feedbacks.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Feedbacks.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

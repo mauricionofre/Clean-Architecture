@@ -1,12 +1,12 @@
 ﻿using CleanArch.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CleanArch.Domain.Repositories
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IRepository<T> where T : Entity
     {
-        IEnumerable<User> GetAll();
-
-        User GetById(int id);
+        IUnitOfWork UnitOfWork { get; }
     }
 }

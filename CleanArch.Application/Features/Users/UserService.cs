@@ -18,7 +18,7 @@ namespace CleanArch.Application.Features.Users
             _repository = userRepository;
         }
 
-        public User GetById(long id)
+        public User GetById(int id)
         {
             _log.LogInformation($"Buscando usuario pelo id: {id}");
 

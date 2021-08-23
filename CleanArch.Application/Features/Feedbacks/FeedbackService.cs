@@ -22,7 +22,7 @@ namespace CleanArch.Application.Features.Feedbacks
         public FeedbackService(ILogger<FeedbackService> logger, IUserService userService, IFeedbackRepository repository, IFeedbackNotification feedbackNotify) =>
             (_logger, _userService, _repository, _feedbackNotify) = (logger, userService, repository, feedbackNotify);
 
-        public async Task<Result<Exception, FeedbackOutputModel>> ApproveAsync(FeedbackApproveModel inputModel, long feedbackId)
+        public async Task<Result<Exception, FeedbackOutputModel>> ApproveAsync(FeedbackApproveModel inputModel, int feedbackId)
         {
             if (!inputModel.Approve && string.IsNullOrEmpty(inputModel.DescriptionRejection))
                 return new Exception("Descrição da rejeição não está preenchida");
@@ -38,7 +38,7 @@ namespace CleanArch.Application.Features.Feedbacks
             else
                 feedback.Reject(inputModel.DescriptionRejection);
 
-            var updateResult = await _repository.UpdateAsync(feedback);
+            var updateResult = await _repository.UnitOfWork.SaveEntitiesAsync();
             if (updateResult.IsFailure)
                 return new Exception("Não foi possivel retornar o Feedback");
 
@@ -67,9 +67,11 @@ namespace CleanArch.Application.Features.Feedbacks
             };
 
             _logger.LogDebug("Adicionando ao repositorio");
-            var addResult = await _repository.AddAsync(feedback);
+            var addResult = _repository.Add(feedback);
             if (addResult.IsFailure)
                 return new Exception("Não foi possivel adicionar o Feedback");
+
+            var result = await _repository.UnitOfWork.SaveEntitiesAsync();
 
             _logger.LogDebug("Criando notificação");
             _ = _feedbackNotify.CreatedFeedbackAsync(feedback);
@@ -90,7 +92,7 @@ namespace CleanArch.Application.Features.Feedbacks
             return Result.Run(() => feedbacks);
         }
 
-        public async Task<Result<Exception, FeedbackOutputModel>> GetByIdAsync(long id)
+        public async Task<Result<Exception, FeedbackOutputModel>> GetByIdAsync(int id)
         {
             var getAllResult = await _repository.GetById(id);
             if (getAllResult.IsFailure || getAllResult.Success == null)

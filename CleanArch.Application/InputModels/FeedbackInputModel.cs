@@ -7,7 +7,7 @@ namespace CleanArch.Application.InputModels
     public class FeedbackInputModel
     {
         public string Commentary { get; set; }
-        public long ToUser { get; set; }
-        public long FromUser { get; set; }
+        public int ToUser { get; set; }
+        public int FromUser { get; set; }
     }
 }

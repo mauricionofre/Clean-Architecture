@@ -26,7 +26,7 @@ namespace CleanArch.Api.Controllers.Feedbacks
         }
 
         [HttpPost("{id:long}/approve")]
-        public async Task<IActionResult> PostApprove([FromBody] FeedbackApproveModel feedback, long id)
+        public async Task<IActionResult> PostApprove([FromBody] FeedbackApproveModel feedback, int id)
         {
             _logger.LogInformation("Aprovando Feedback");
 
@@ -40,7 +40,7 @@ namespace CleanArch.Api.Controllers.Feedbacks
         }
 
         [HttpGet("{id:long}")]
-        public async Task<IActionResult> GetById(long id)
+        public async Task<IActionResult> GetById(int id)
         {
             return HandleService(await _service.GetByIdAsync(id));
         }

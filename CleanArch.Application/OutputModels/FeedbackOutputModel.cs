@@ -13,10 +13,10 @@ namespace CleanArch.Application.InputModels
             Status = feedback.Status.GetHashCode();
         }
 
-        public long Id { get; set; }
+        public int Id { get; set; }
         public string Commentary { get; set; }
-        public long ToUserId { get; set; }
-        public long FromUserId { get; set; }
+        public int ToUserId { get; set; }
+        public int FromUserId { get; set; }
         public int Status { get; set; }
     }
 }
