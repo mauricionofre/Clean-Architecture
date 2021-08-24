@@ -1,5 +1,6 @@
 ﻿using CleanArch.Domain;
 using CleanArch.Domain.Entities;
+using CleanArch.Domain.Entities.Feedbacks;
 using CleanArch.Domain.Notifications;
 using System;
 using System.Threading.Tasks;

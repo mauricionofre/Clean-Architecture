@@ -1,10 +1,10 @@
 ﻿using CleanArch.Application.Features.Users;
 using CleanArch.Application.InputModels;
 using CleanArch.Domain;
-using CleanArch.Domain.Entities;
+using CleanArch.Domain.Entities.Feedbacks;
+using CleanArch.Domain.Entities.Users;
 using CleanArch.Domain.Enums;
 using CleanArch.Domain.Notifications;
-using CleanArch.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;

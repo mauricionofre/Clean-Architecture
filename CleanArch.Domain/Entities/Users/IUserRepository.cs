@@ -1,7 +1,7 @@
-﻿using CleanArch.Domain.Entities;
+﻿using CleanArch.Domain.Repositories;
 using System.Collections.Generic;
 
-namespace CleanArch.Domain.Repositories
+namespace CleanArch.Domain.Entities.Users
 {
     public interface IUserRepository : IRepository<User>
     {

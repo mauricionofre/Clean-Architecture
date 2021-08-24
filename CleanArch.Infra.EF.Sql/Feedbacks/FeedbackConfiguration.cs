@@ -1,7 +1,6 @@
-﻿using CleanArch.Domain.Entities;
+﻿using CleanArch.Domain.Entities.Feedbacks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace CleanArch.Infra.EF.Sql.Feedbacks
 {

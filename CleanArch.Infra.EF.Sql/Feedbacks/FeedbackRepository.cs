@@ -1,5 +1,5 @@
 ﻿using CleanArch.Domain;
-using CleanArch.Domain.Entities;
+using CleanArch.Domain.Entities.Feedbacks;
 using CleanArch.Domain.Exceptions;
 using CleanArch.Domain.Repositories;
 using CleanArch.Infra.EF.Sql.Contexts;

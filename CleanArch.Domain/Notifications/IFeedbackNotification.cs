@@ -1,4 +1,4 @@
-﻿using CleanArch.Domain.Entities;
+﻿using CleanArch.Domain.Entities.Feedbacks;
 using System;
 using System.Threading.Tasks;
 

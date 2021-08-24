@@ -1,9 +1,10 @@
 ﻿using CleanArch.Domain.Entities;
+using CleanArch.Domain.Repositories;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CleanArch.Domain.Repositories
+namespace CleanArch.Domain.Entities.Feedbacks
 {
     public interface IFeedbackRepository : IRepository<Feedback>
     {

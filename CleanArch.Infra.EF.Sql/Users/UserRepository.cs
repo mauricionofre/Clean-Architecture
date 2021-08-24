@@ -1,4 +1,4 @@
-﻿using CleanArch.Domain.Entities;
+﻿using CleanArch.Domain.Entities.Users;
 using CleanArch.Domain.Repositories;
 using CleanArch.Infra.EF.Sql.Contexts;
 using Microsoft.EntityFrameworkCore;

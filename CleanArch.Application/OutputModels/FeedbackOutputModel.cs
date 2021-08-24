@@ -1,4 +1,5 @@
 ﻿using CleanArch.Domain.Entities;
+using CleanArch.Domain.Entities.Feedbacks;
 
 namespace CleanArch.Application.InputModels
 {

@@ -1,9 +1,9 @@
 ﻿using CleanArch.Domain.Enums;
 using System;
 
-namespace CleanArch.Domain.Entities
+namespace CleanArch.Domain.Entities.Feedbacks
 {
-    public class Feedback : Entity
+    public class Feedback : Entity, IAggregateRoot
     {
         public string Commentary { get; set; }
         public FeedbackStatusEnum Status { get; set; }

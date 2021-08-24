@@ -1,5 +1,6 @@
 ﻿using CleanArch.Domain;
-using CleanArch.Domain.Entities;
+using CleanArch.Domain.Entities.Feedbacks;
+using CleanArch.Domain.Entities.Users;
 using CleanArch.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,4 +1,5 @@
-﻿using CleanArch.Domain.Repositories;
+﻿using CleanArch.Domain.Entities.Feedbacks;
+using CleanArch.Domain.Entities.Users;
 using CleanArch.Infra.EF.Sql.Contexts;
 using CleanArch.Infra.EF.Sql.Feedbacks;
 using CleanArch.Infra.EF.Sql.Migrations;

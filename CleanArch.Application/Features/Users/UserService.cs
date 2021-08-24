@@ -1,9 +1,6 @@
-﻿using CleanArch.Domain.Entities;
-using CleanArch.Domain.Repositories;
+﻿using CleanArch.Domain.Entities.Users;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CleanArch.Application.Features.Users
 {
