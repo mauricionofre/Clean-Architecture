@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MediatR;
+using System;
+using System.Collections.Generic;
 
 namespace CleanArch.Domain.Entities
 {
@@ -17,6 +19,20 @@ namespace CleanArch.Domain.Entities
             {
                 _Id = value;
             }
+        }
+
+        private List<INotification> _domainEvents;
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
+        public void AddDomainEvent(INotification eventItem)
+        {
+            _domainEvents = _domainEvents ?? new List<INotification>();
+            _domainEvents.Add(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
         }
 
         public bool IsTransient()

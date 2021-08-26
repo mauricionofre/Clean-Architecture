@@ -1,4 +1,5 @@
 ﻿using CleanArch.Domain.Enums;
+using CleanArch.Domain.Events;
 using System;
 
 namespace CleanArch.Domain.Entities.Feedbacks
@@ -16,12 +17,15 @@ namespace CleanArch.Domain.Entities.Feedbacks
         {
             Status = FeedbackStatusEnum.Approved;
             StatusDescription = null;
+            AddDomainEvent(new ApprovedFeedbackDomainEvent(this));
         }
 
         public void Reject(string description)
         {
             Status = FeedbackStatusEnum.Rejected;
             StatusDescription = description;
+
+            AddDomainEvent(new RejectedFeedbackDomainEvent(this));
         }
     }
 }
