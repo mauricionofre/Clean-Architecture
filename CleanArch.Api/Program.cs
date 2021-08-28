@@ -2,18 +2,37 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CleanArch.Api
 {
     public class Program
     {
+        public static string Namespace = typeof(Startup).Namespace;
+        public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateBootstrapLogger();
+
+            Log.Information("Starting up!");
+
+            try
+            {
+                Log.Information("Starting host...");
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly.");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,10 +41,15 @@ namespace CleanArch.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-            .ConfigureLogging(logging =>
-            {
-                logging.ClearProviders();
-                logging.AddConsole();
-            });
+                .UseSerilog((context, services, configuration) =>
+                {
+                    var seqServerUrl = context.Configuration["Serilog:SeqServerUrl"];
+                    configuration
+                        .ReadFrom.Configuration(context.Configuration)
+                        .Enrich.WithProperty("ApplicationContext", Program.AppName)
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console()
+                        .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl);
+                });
     }
 }

@@ -36,12 +36,14 @@ namespace CleanArch.Api.Controllers.Feedbacks
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            _logger.LogInformation("Buscando Feedbacks");
             return HandleService(await _service.GetAll());
         }
 
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetById(int id)
         {
+            _logger.LogInformation("Buscando Feedback id: {FeedbackId}", id);
             return HandleService(await _service.GetByIdAsync(id));
         }
     }
